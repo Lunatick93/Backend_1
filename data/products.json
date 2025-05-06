@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Test",
+    "price": 1400
+  },
+  {
+    "id": 2
+  },
+  {
+    "id": 3
+  },
+  {
+    "id": 4
+  },
+  {
+    "id": 5,
+    "title": "Casco Shark",
+    "description": "Casco integral negro",
+    "code": "SHK001",
+    "price": 1200,
+    "status": true,
+    "stock": 10,
+    "category": "Cascos",
+    "thumbnails": [
+      "img/casco1.jpg"
+    ]
+  }
+]

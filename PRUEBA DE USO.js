@@ -1,0 +1,3 @@
+const ejemplo = () => {
+  return "hola";
+};
