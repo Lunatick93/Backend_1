@@ -5,9 +5,7 @@ export default class CartManager {
     this.path = path;
   }
 
-  // ————— Métodos privados —————
-
-  // Lee el JSON de carritos (o [] si no existe o está vacío)
+  // esto va a leer el JSON de carritos (o [] si no existe o está vacío)
   async _readFile() {
     try {
       const data = await fs.readFile(this.path, "utf-8");
@@ -19,16 +17,14 @@ export default class CartManager {
     }
   }
 
-  // Escribe el array de carritos formateado
+  // Escribe el array de carritos formateado (esta forma funciona, se reemplaza la anterior que daba error)
   async _writeFile(carts) {
     await fs.writeFile(this.path, JSON.stringify(carts, null, 2));
   }
 
-  // ————— Métodos públicos —————
-
-  /**
-   * createCart(): crea un carrito nuevo con id autogenerado y products = []
-   * Devuelve el carrito creado.
+  /*
+   createCart(): crea un carrito nuevo con id autogenerado y products = []
+   Devuelve el carrito creado.  luego pruebo en el postman que funcione todo correctamente el endpoint
    */
   async createCart() {
     const carts = await this._readFile();
@@ -40,8 +36,8 @@ export default class CartManager {
     return newCart;
   }
 
-  /**
-   * getById(id): devuelve el carrito con ese id, o null si no existe.
+  /*
+   * getById(id): devuelve el carrito con ese id, o null si no existe. se probo y funciona bien,
    */
   async getById(id) {
     const carts = await this._readFile();
@@ -49,10 +45,10 @@ export default class CartManager {
     return cart || null;
   }
 
-  /**
+  /*
    * addProductToCart(cartId, productId):
-   * - Si productId ya existe en cart.products, incrementa quantity.
-   * - Si no, agrega { product: productId, quantity: 1 }.
+   * Si productId ya existe en cart.products, incrementa quantity.
+   * Si no, agrega { product: productId, quantity: 1 }. probar por las dudas / actualizacion: se probo y funciona bien
    * Devuelve el carrito actualizado, o null si no encontró el carrito.
    */
   async addProductToCart(cartId, productId) {

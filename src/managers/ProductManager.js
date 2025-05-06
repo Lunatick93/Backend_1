@@ -5,9 +5,7 @@ export default class ProductManager {
     this.path = path;
   }
 
-  // ————— Métodos privados —————
-
-  // Lee el JSON (o [] si no existe o está vacío)
+  // Lee el JSON (o [] si no existe o esta vacio)
   async _readFile() {
     try {
       const data = await fs.readFile(this.path, "utf-8");
@@ -19,12 +17,10 @@ export default class ProductManager {
     }
   }
 
-  // Escribe el array formateado
+  // Escribe el array formateado - el anteior no funciono, este si.
   async _writeFile(products) {
     await fs.writeFile(this.path, JSON.stringify(products, null, 2));
   }
-
-  // ————— Métodos públicos —————
 
   // 1. Devuelve todos los productos
   async getAll() {
@@ -38,7 +34,7 @@ export default class ProductManager {
     return product || null;
   }
 
-  // 3. Añade un producto (genera id automáticamente)
+  // 3. Añade un producto (genera id automáticamente) -revisar el que mostro el profesor por las dudas
   async add(product) {
     const products = await this._readFile();
     const newId =

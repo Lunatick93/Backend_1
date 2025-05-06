@@ -27,7 +27,7 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-// POST agregar/incrementar producto
+// POST agregar o incrementar producto
 router.post("/:cid/product/:pid", async (req, res) => {
   try {
     // 1) Validar existencia de carrito
@@ -39,7 +39,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
     if (!product)
       return res.status(404).json({ error: "Producto no encontrado" });
 
-    // 3) Agregar o incrementar
+    // 3) Agregar o incrementar - no funcionaba /actualizado: ahora si funca
     const updatedCart = await cm.addProductToCart(
       req.params.cid,
       req.params.pid

@@ -13,10 +13,10 @@ const requiredFields = {
   status: "boolean",
   stock: "number",
   category: "string",
-  thumbnails: "object" // esperamos un array
+  thumbnails: "object" // esperamos un array - probar si o si
 };
 
-// Helper: valida body contra requiredFields
+// Helper: valida body contra requiredFields - revisar la forma del profe por si no funciona esta manera.
 function validateProductBody(body) {
   for (const [field, type] of Object.entries(requiredFields)) {
     if (!(field in body)) {
