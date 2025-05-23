@@ -2,7 +2,7 @@ import { Router } from "express";
 import ProductManager from "../managers/ProductManager.js";
 
 const router = Router();
-const pm = new ProductManager("data/products.json");
+const pm = new ProductManager("src/data/products.json");
 
 // Campos obligatorios y sus tipos esperados
 const requiredFields = {

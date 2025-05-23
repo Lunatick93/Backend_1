@@ -3,8 +3,8 @@ import CartManager from "../managers/CartManager.js";
 import ProductManager from "../managers/ProductManager.js";
 
 const router = Router();
-const cm = new CartManager("data/carts.json");
-const pm = new ProductManager("data/products.json");
+const cm = new CartManager("src/data/carts.json");
+const pm = new ProductManager("src/data/products.json");
 
 // POST crear carrito
 router.post("/", async (req, res) => {
