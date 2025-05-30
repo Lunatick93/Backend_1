@@ -11,9 +11,6 @@
     "id": 3
   },
   {
-    "id": 4
-  },
-  {
     "id": 5,
     "title": "Casco Shark",
     "description": "Casco integral negro",
@@ -25,5 +22,27 @@
     "thumbnails": [
       "img/casco1.jpg"
     ]
+  },
+  {
+    "id": 6,
+    "title": "campera",
+    "description": "asdasd",
+    "code": "1423",
+    "price": 5000,
+    "status": true,
+    "stock": 25,
+    "category": "campera",
+    "thumbnails": []
+  },
+  {
+    "id": 7,
+    "title": "guantes",
+    "description": "guantes invierno",
+    "code": "2020",
+    "price": 2000,
+    "status": true,
+    "stock": 10,
+    "category": "guantes",
+    "thumbnails": []
   }
 ]
