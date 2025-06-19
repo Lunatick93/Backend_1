@@ -1,53 +1,12 @@
 import { Router } from "express";
-import CartManager from "../managers/CartManager.js";
-import ProductManager from "../managers/ProductManager.js";
+import * as ctrl from "../controllers/cart.controller.js";
 
 const router = Router();
-const cm = new CartManager("src/data/carts.json");
-const pm = new ProductManager("src/data/products.json");
 
-// POST crear carrito
-router.post("/", async (req, res) => {
-  try {
-    const cart = await cm.createCart();
-    res.status(201).json(cart);
-  } catch (err) {
-    res.status(500).json({ error: "Error creando carrito" });
-  }
-});
-
-// GET productos de carrito
-router.get("/:cid", async (req, res) => {
-  try {
-    const cart = await cm.getById(req.params.cid);
-    if (!cart) return res.status(404).json({ error: "Carrito no encontrado" });
-    res.json(cart.products);
-  } catch (err) {
-    res.status(500).json({ error: "Error leyendo carrito" });
-  }
-});
-
-// POST agregar o incrementar producto
-router.post("/:cid/product/:pid", async (req, res) => {
-  try {
-    // 1) Validar existencia de carrito
-    const cart = await cm.getById(req.params.cid);
-    if (!cart) return res.status(404).json({ error: "Carrito no encontrado" });
-
-    // 2) Validar existencia de producto
-    const product = await pm.getById(req.params.pid);
-    if (!product)
-      return res.status(404).json({ error: "Producto no encontrado" });
-
-    // 3) Agregar o incrementar - no funcionaba /actualizado: ahora si funca
-    const updatedCart = await cm.addProductToCart(
-      req.params.cid,
-      req.params.pid
-    );
-    res.json(updatedCart);
-  } catch (err) {
-    res.status(500).json({ error: "Error agregando producto al carrito" });
-  }
-});
+router.get("/:cid", ctrl.getById);
+router.delete("/:cid/products/:pid", ctrl.deleteProduct);
+router.put("/:cid", ctrl.updateCart);
+router.put("/:cid/products/:pid", ctrl.updateQuantity);
+router.delete("/:cid", ctrl.clear);
 
 export default router;

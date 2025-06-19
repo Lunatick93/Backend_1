@@ -1,65 +1,43 @@
+import "dotenv/config";
 import express from "express";
-import { createServer } from "http";
-import { Server as IOServer } from "socket.io";
 import { engine } from "express-handlebars";
-import ProductManager from "./managers/ProductManager.js";
-
+import { connectDB } from "./config/db.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 
-const app = express();
-const PORT = 8080;
+async function startServer() {
+  try {
+    await connectDB();
 
-const httpServer = createServer(app);
-const io = new IOServer(httpServer);
-//config handlebars
-app.engine(
-  "handlebars",
-  engine({
-    layoutsDir: "src/views/layouts",
-    defaultLayout: "main"
-  })
-);
-app.set("view engine", "handlebars");
-app.set("views", "src/views");
-//middlewares//
-app.use(express.json());
-app.use(express.static("public"));
+    const app = express();
+    const PORT = process.env.PORT || 8080;
 
-app.use("/", viewsRouter);
+    app.engine(
+      "handlebars",
+      engine({
+        layoutsDir: "src/views/layouts",
+        defaultLayout: "main"
+      })
+    );
+    app.set("view engine", "handlebars");
+    app.set("views", "src/views");
 
-app.set("io", io);
+    app.use(express.static("public"));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-io.on("connection", (socket) => {
-  console.log("Cliente conectado:", socket.id);
-  const pm = new ProductManager("src/data/products.json");
+    app.use("/api/products", productsRouter);
+    app.use("/api/carts", cartsRouter);
+    app.use("/", viewsRouter);
 
-  // envia lista al nuev cliente //
-  socket.on("getProducts", async () => {
-    const products = await pm.getAll();
-    socket.emit("productsList", products);
-  });
+    app.listen(PORT, () => {
+      console.log(`Server listening on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("Error arrancando el servidor:", err);
+    process.exit(1);
+  }
+}
 
-  // producto via ws //
-  socket.on("createProduct", async (data) => {
-    await pm.add(data);
-    const products = await pm.getAll();
-    io.emit("productsList", products);
-  });
-
-  // elimina prodct con ws //
-  socket.on("deleteProduct", async (id) => {
-    await pm.delete(id);
-    const products = await pm.getAll();
-    io.emit("productsList", products);
-  });
-});
-
-// apis //
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
-
-httpServer.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-});
+startServer();
