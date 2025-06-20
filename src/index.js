@@ -17,7 +17,11 @@ async function startServer() {
       "handlebars",
       engine({
         layoutsDir: "src/views/layouts",
-        defaultLayout: "main"
+        defaultLayout: "main",
+        runtimeOptions: {
+          allowProtoPropertiesByDefault: true,
+          allowProtoMethodsByDefault: true
+        }
       })
     );
     app.set("view engine", "handlebars");

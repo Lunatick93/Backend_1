@@ -1,13 +1,11 @@
 <h1>{{title}}</h1>
+
 <ul>
   {{#each products}}
     <li>
-      <strong>{{this.title}}</strong>
-      - Precio:
-      {{this.price}}
-      -
+      <strong>{{this.title}}</strong> – Precio: {{this.price}} –
       <a href="/products/{{this._id}}">Ver detalles</a>
-      <button onclick="addToCart('{{this._id}}')">+Carrito</button>
+      <button type="button" onclick="addToCart('{{this._id}}')">+Carrito</button>
     </li>
   {{/each}}
 </ul>
@@ -16,16 +14,30 @@
   {{#if pagination.hasPrevPage}}
     <a href="{{pagination.baseLink}}&page={{pagination.prevPage}}">Anterior</a>
   {{/if}}
-  Página
-  {{pagination.page}}
-  de
-  {{pagination.totalPages}}
+  Página {{pagination.page}} de {{pagination.totalPages}}
   {{#if pagination.hasNextPage}}
     <a href="{{pagination.baseLink}}&page={{pagination.nextPage}}">Siguiente</a>
   {{/if}}
 </nav>
 
 <script>
-  function addToCart(pid) { fetch(`/api/carts/1/product/${pid}`, { method:
-  'POST' }) .then(res => res.json()) .then(console.log); }
+  const cartId = "{{cartId}}";
+
+  function addToCart(productId) {
+    console.debug("DEBUG addToCart called with:", productId);
+    fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: 'POST'
+    })
+      .then(async res => {
+        const data = await res.json();
+        console.log("Fetch response:", res.status, data);
+        if (!res.ok) throw new Error(data.error || 'Error agregando al carrito');
+        alert('✅ Producto agregado al carrito');
+      })
+      .catch(err => {
+        console.error(err);
+        alert('❌ Error al agregar: ' + err.message);
+      });
+  }
 </script>
+
